@@ -57,4 +57,14 @@ if __name__ == '__main__':
 
     # 📊 Vizuální výstupy
     vz.display_sentiment_results(sentiment_results)
-    vz.generate_wordcloud(translated_reviews, "reviews_wordcloud.png")
+    vz.generate_wordcloud(translated_reviews, "img/reviews_wordcloud.png")
+
+    # 🔍 Analýza slov (nejčastější a nejdelší)
+    most_common, longest = vz.analyze_words(translated_reviews)
+
+    print("\n📌 30 nejpoužívanějších slov:\n", most_common)
+    print("\n📌 30 nejdelších slov:\n", longest)
+
+    # Generování wordcloudů pro nejpoužívanější a nejdelší slova
+    vz.generate_wordcloud(most_common, "img/most_common_words.png")
+    vz.generate_wordcloud(longest, "img/longest_words.png")
