@@ -1,6 +1,7 @@
 import scraper as sc
 import translator as tr
 import sentiment_analyzer as sa
+import visualization as vz
 import os
 
 # Konstanty pro výběr režimu (0 = použít soubor, 1 = přeložit API)
@@ -46,8 +47,14 @@ if __name__ == '__main__':
             exit()
 
     print("\n📌 Stažené, přeložené a analyzované recenze:\n")
+    sentiment_results = []
     for i, translated_review in enumerate(translated_reviews, 1):
         sentiment, score = sa.analyze_sentiment(translated_review)
+        sentiment_results.append((translated_review, sentiment, score))
 
         print(f"{i}. EN: {translated_review}")
         print(f"   🔹 Sentiment: {sentiment} (score: {score})\n")
+
+    # 📊 Vizuální výstupy
+    vz.display_sentiment_results(sentiment_results)
+    vz.generate_wordcloud(translated_reviews, "reviews_wordcloud.png")
