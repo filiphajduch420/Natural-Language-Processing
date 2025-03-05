@@ -1,16 +1,9 @@
-# This is a sample Python script.
+import scraper as sc
 
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
+    url = "https://www.csfd.cz/film/237486-pernikovy-tata/recenze/"
+    reviews = sc.get_reviews(url)
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    print("Stažené recenze:")
+    for i, review in enumerate(reviews[:5], 1):
+        print(f"{i}. {review}\n")
