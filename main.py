@@ -5,53 +5,52 @@ import visualization as vz
 import saver as sv
 from saver import export_to_pdf
 
-# Konstanty pro výběr režimu (0 = použít soubor, 1 = přeložit API)
-USE_API = 0
+# Constants for mode selection (0 = use file, 1 = translate API)
+USE_API = 1
 
 if __name__ == '__main__':
     url = "https://www.csfd.cz/film/237486-pernikovy-tata/recenze/"
 
-    if USE_API:  # Pokud je API zapnuté, přeložíme nové recenze
-        print("Překládám recenze (API)...")
+    if USE_API:  # If API is enabled, translate new reviews
+        print("Translating reviews (API)...")
         reviews = sc.get_reviews(url)
 
         if reviews:
-            translated_reviews = [tr.translate_text(review) for review in reviews[:5]]
-            sv.save_translated_reviews(translated_reviews)  # Uložíme pro další použití
+            translated_reviews = [tr.translate_text(review) for review in reviews]
+            sv.save_translated_reviews(translated_reviews)  # Save for future use
         else:
-            print("Žádné recenze nebyly nalezeny!")
+            print("No reviews found!")
             exit()
 
-    else:  # Pokud API není zapnuté, použijeme uložené recenze
-        print("Používám přeložené recenze ze souboru...")
+    else:  # If API is not enabled, use saved reviews
+        print("Using translated reviews from file...")
         translated_reviews = sv.load_translated_reviews()
 
         if not translated_reviews:
-            print("❌ Soubor s přeloženými recenzemi neexistuje! Změň USE_API na 1 a spusť znovu.")
+            print("File with translated reviews does not exist! Change USE_API to 1 and run again.")
             exit()
 
-    print("\nStažené, přeložené a analyzované recenze:\n")
+    #print("\nDownloaded, translated, and analyzed reviews:\n")
     sentiment_results = []
     for i, translated_review in enumerate(translated_reviews, 1):
         sentiment, score = sa.analyze_sentiment(translated_review)
         sentiment_results.append((translated_review, sentiment, score))
 
-        print(f"{i}. EN: {translated_review}")
-        print(f"   🔹 Sentiment: {sentiment} (score: {score})\n")
+        #print(f"{i}. EN: {translated_review}")
+        #print(f"   🔹 Sentiment: {sentiment} (score: {score})\n")
 
-    # 📊 Vizuální výstupy
-    vz.display_sentiment_results(sentiment_results)
+    # 📊 Visual outputs
     vz.generate_wordcloud(translated_reviews, "img/reviews_wordcloud.png")
 
-    # 🔍 Analýza slov (nejčastější a nejdelší)
+    # 🔍 Word analysis (most common and longest)
     most_common, longest = vz.analyze_words(translated_reviews)
 
-    print("\n30 nejpoužívanějších slov:\n", most_common)
-    print("\n30 nejdelších slov:\n", longest)
+    #print("\n30 most used words:\n", most_common)
+    #print("\n30 longest words:\n", longest)
 
-    # Generování wordcloudů pro nejpoužívanější a nejdelší slova
+    # Generate word clouds for most used and longest words
     vz.generate_wordcloud(most_common, "img/most_common_words.png")
     vz.generate_wordcloud(longest, "img/longest_words.png")
 
-    # 📄 Export do PDF
-    export_to_pdf(url, sentiment_results, most_common,longest,pdf_filename="report/sentiment_report.pdf")
+    # 📄 Export to PDF
+    export_to_pdf(url, sentiment_results, most_common, longest, pdf_filename="report/sentiment_report.pdf")

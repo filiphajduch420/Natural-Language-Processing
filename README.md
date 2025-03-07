@@ -23,19 +23,8 @@ This project is a **Natural Language Processing (NLP) tool** that **scrapes onli
 
 ---
 
-## 📂 Project Structure
-📁 sentiment_analysis_project
-│── 📄 README.md               # Project documentation
-│── 📂 report/                 # Output reports (PDF)
-│── 📂 img/                    # Word cloud images
-│── 📜 main.py                 # Main script - controls execution
-│── 📜 scraper.py              # Web scraper for reviews
-│── 📜 translator.py           # Translates reviews into English
-│── 📜 sentiment_analyzer.py   # Performs sentiment analysis
-│── 📜 visualization.py        # Generates word clouds & displays data
-│── 📜 saver.py                # Exports data to PDF
-│── 📜 requirements.txt        # Required dependencies     # Required dependencies
-
-
+## Example Report Output
+The tool generates a PDF report with the following structure:
+[Download the PDF report](report/sentiment_report.pdf)
 #### Author: Filip Hajduch
 ###### and ChatGPT

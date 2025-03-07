@@ -6,12 +6,14 @@ TRANSLATED_FILE = "reviews.txt"
 # 📌 Function to save and load reviews
 def save_translated_reviews(translated_reviews):
     """ Saves translated reviews to a file """
+    print("Saving translated reviews to file...")
     with open(TRANSLATED_FILE, "w", encoding="utf-8") as file:
         for review in translated_reviews:
             file.write(review + "\n")
 
 def load_translated_reviews():
     """ Loads translated reviews from a file if it exists """
+    print("Loading translated reviews from file...")
     if os.path.exists(TRANSLATED_FILE):
         with open(TRANSLATED_FILE, "r", encoding="utf-8") as file:
             return [line.strip() for line in file.readlines()]
@@ -32,8 +34,9 @@ class PDF(FPDF):
                 self.cell(col_width, 10, str(item).encode('latin-1', 'replace').decode('latin-1'), border=1, align="L")
             self.ln()
 
-def export_to_pdf(url, sentiment_results, most_common_words, longest_words,pdf_filename="report/sentiment_report.pdf"):
+def export_to_pdf(url, sentiment_results, most_common_words, longest_words, pdf_filename="report/sentiment_report.pdf"):
     """ Exports the sentiment analysis results to a PDF """
+    print("Exporting results to PDF...")
     pdf = PDF()
     pdf.set_auto_page_break(auto=True, margin=15)
     pdf.add_page()
@@ -69,13 +72,11 @@ def export_to_pdf(url, sentiment_results, most_common_words, longest_words,pdf_f
     formatted_words = ", ".join(most_common_words)
 
     pdf.set_font("Arial", "", 10)
-    pdf.multi_cell(0, 7, formatted_words, border=1, align="L")  # Víceřádková buňka
-
+    pdf.multi_cell(0, 7, formatted_words, border=1, align="L")  # Multi-line cell
 
     # 📌 Add word cloud image for most common words
     pdf.ln(10)
     pdf.image("img/most_common_words.png", x=None, y=None, w=150)
-
 
     # 📌 Add longest words in a single cell
     pdf.ln(10)
@@ -86,11 +87,10 @@ def export_to_pdf(url, sentiment_results, most_common_words, longest_words,pdf_f
     pdf.set_font("Arial", "", 10)
     pdf.multi_cell(0, 7, formatted_longest_words, border=1, align="L")
 
-    # 📌 Add word cloud image for most common words
+    # 📌 Add word cloud image for longest words
     pdf.ln(10)
     pdf.image("img/longest_words.png", x=None, y=None, w=150)
 
-
     # 📌 Save the PDF
     pdf.output(pdf_filename)
-    print(f"📄 Report saved as {pdf_filename}")
+    print(f"Report saved as {pdf_filename}")
