@@ -3,6 +3,7 @@ import translator as tr
 import sentiment_analyzer as sa
 import visualization as vz
 import saver as sv
+from saver import export_to_pdf
 
 # Konstanty pro výběr režimu (0 = použít soubor, 1 = přeložit API)
 USE_API = 0
@@ -53,4 +54,4 @@ if __name__ == '__main__':
     vz.generate_wordcloud(longest, "img/longest_words.png")
 
     # 📄 Export do PDF
-    sv.export_to_pdf(sentiment_results, most_common, longest, "report/sentiment_report.pdf")
+    export_to_pdf(url, sentiment_results, most_common,longest,pdf_filename="report/sentiment_report.pdf")
