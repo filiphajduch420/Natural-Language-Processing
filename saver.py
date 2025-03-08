@@ -3,35 +3,38 @@ from fpdf import FPDF
 
 TRANSLATED_FILE = "reviews.txt"
 
-# 📌 Function to save and load reviews
 def save_translated_reviews(translated_reviews):
     """ Saves translated reviews to a file """
-    print("Saving translated reviews to file...")
     with open(TRANSLATED_FILE, "w", encoding="utf-8") as file:
         for review in translated_reviews:
             file.write(review + "\n")
 
 def load_translated_reviews():
     """ Loads translated reviews from a file if it exists """
-    print("Loading translated reviews from file...")
     if os.path.exists(TRANSLATED_FILE):
         with open(TRANSLATED_FILE, "r", encoding="utf-8") as file:
             return [line.strip() for line in file.readlines()]
     return None
 
 class PDF(FPDF):
+    def __init__(self):
+        super().__init__()
+        # ✅ Přidání fontu při inicializaci třídy
+        self.add_font('FreeSans', '', 'fonts/FreeSans.ttf', uni=True)
+        self.add_font('FreeSans', 'B', 'fonts/FreeSansBold.ttf', uni=True)
+
     def header(self):
-        self.set_font("Arial", "B", 16)
+        self.set_font("FreeSans", "B", 16)  # ✅ Font je nyní zaregistrovaný!
         self.cell(200, 10, "Sentiment Analysis Report", ln=True, align="C")
         self.ln(10)
 
     def add_table(self, data, col_widths):
         """ Adds a table to the PDF """
-        self.set_font("Arial", "", 10)
+        self.set_font("FreeSans", "", 10)
         for row in data:
             for i, item in enumerate(row):
-                col_width = col_widths[i % len(col_widths)]  # Ensure col_widths is accessed correctly
-                self.cell(col_width, 10, str(item).encode('latin-1', 'replace').decode('latin-1'), border=1, align="L")
+                col_width = col_widths[i % len(col_widths)]
+                self.cell(col_width, 10, str(item), border=1, align="L")
             self.ln()
 
 def export_to_pdf(url, sentiment_results, most_common_words, longest_words, pdf_filename="report/sentiment_report.pdf"):
@@ -42,7 +45,7 @@ def export_to_pdf(url, sentiment_results, most_common_words, longest_words, pdf_
     pdf.add_page()
 
     # 📌 Add URL
-    pdf.set_font("Arial", "B", 12)
+    pdf.set_font("FreeSans", "", 12)
     pdf.cell(200, 10, f"URL: {url}", ln=True, align="L")
     pdf.ln(5)
 
@@ -65,14 +68,13 @@ def export_to_pdf(url, sentiment_results, most_common_words, longest_words, pdf_
 
     # 📌 Add most common words in a single cell
     pdf.ln(10)
-    pdf.set_font("Arial", "B", 12)
+    pdf.set_font("FreeSans", "B", 12)
     pdf.cell(200, 10, "30 Most Used Words", ln=True, align="L")
     pdf.ln(5)
 
     formatted_words = ", ".join(most_common_words)
-
-    pdf.set_font("Arial", "", 10)
-    pdf.multi_cell(0, 7, formatted_words, border=1, align="L")  # Multi-line cell
+    pdf.set_font("FreeSans", "", 10)
+    pdf.multi_cell(0, 7, formatted_words, border=1, align="L")
 
     # 📌 Add word cloud image for most common words
     pdf.ln(10)
@@ -80,11 +82,12 @@ def export_to_pdf(url, sentiment_results, most_common_words, longest_words, pdf_
 
     # 📌 Add longest words in a single cell
     pdf.ln(10)
-    pdf.set_font("Arial", "B", 12)
+    pdf.set_font("FreeSans", "B", 12)
     pdf.cell(200, 10, "30 Longest Words", ln=True, align="L")
     pdf.ln(5)
+
     formatted_longest_words = ", ".join(longest_words)
-    pdf.set_font("Arial", "", 10)
+    pdf.set_font("FreeSans", "", 10)
     pdf.multi_cell(0, 7, formatted_longest_words, border=1, align="L")
 
     # 📌 Add word cloud image for longest words

@@ -9,7 +9,7 @@ from saver import export_to_pdf
 USE_API = 1
 
 if __name__ == '__main__':
-    url = "https://www.csfd.cz/film/237486-pernikovy-tata/recenze/"
+    url = "https://www.csfd.cz/film/29952-plump-fiction/recenze/"
 
     if USE_API:  # If API is enabled, translate new reviews
         print("Translating reviews (API)...")
@@ -53,4 +53,4 @@ if __name__ == '__main__':
     vz.generate_wordcloud(longest, "img/longest_words.png")
 
     # 📄 Export to PDF
-    export_to_pdf(url, sentiment_results, most_common, longest, pdf_filename="report/sentiment_report.pdf")
+    export_to_pdf(url, sentiment_results, most_common, longest, pdf_filename="report/sentiment_report_second.pdf")
